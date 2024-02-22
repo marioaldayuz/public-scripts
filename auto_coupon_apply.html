@@ -1,0 +1,33 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to get URL parameters
+    function getQueryParam(param) {
+        var params = new URLSearchParams(window.location.search);
+        return params.get(param);
+    }
+
+    // Extract the coupon code from the URL
+    var couponCode = getQueryParam('coupon_code');
+
+    // If there's a coupon code, fill the input and setup a periodic check for the button's enabled state
+    if (couponCode) {
+        // Find the input box and button
+        var inputBox = document.querySelector('input[name="coupon_code"]');
+        var applyButton = document.querySelector('button.apply-btn.apply-coupon-btn');
+
+        // Fill the input box with the coupon code
+        inputBox.value = couponCode;
+
+        // Function to check if the button is enabled and click it
+        var attemptApplyCoupon = function() {
+            if (!applyButton.disabled) { // Check if the button is enabled
+                applyButton.click();
+                clearInterval(checkButtonEnabled); // Clear the interval once clicked
+            }
+        };
+
+        // Set an interval to check every 500 milliseconds if the button is enabled
+        var checkButtonEnabled = setInterval(attemptApplyCoupon, 500);
+    }
+});
+</script>
